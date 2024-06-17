@@ -21,7 +21,7 @@ namespace SharedFolderAPI.Services
             await Task.CompletedTask;
         }
 
-        public async Task<IEnumerable<string>> ListFoldersAsync()
+        public async Task<IEnumerable<string>> ListFoldersAsync(string path = "")
         {
             throw new NotImplementedException();
         }

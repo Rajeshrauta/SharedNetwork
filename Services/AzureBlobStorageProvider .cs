@@ -24,17 +24,31 @@ namespace SharedFolderAPI.Services
             await blobClient.UploadAsync(stream);
         }
 
-        public async Task<IEnumerable<string>> ListFoldersAsync()
-        {
-            var folders = new HashSet<string>();
-            await foreach (BlobItem blobItem in _containerClient.GetBlobsAsync())
-            {
-                var folderName = blobItem.Name.Split('/')[0];
-                folders.Add(folderName);
-            }
-            return folders;
-        }
+        //public async Task<IEnumerable<string>> ListFoldersAsync()
+        //{
+        //    var folders = new HashSet<string>();
+        //    await foreach (BlobItem blobItem in _containerClient.GetBlobsAsync())
+        //    {
+        //        var folderName = blobItem.Name.Split('/')[0];
+        //        folders.Add(folderName);
+        //    }
+        //    return folders;
+        //}
 
+        public async Task<IEnumerable<string>> ListFoldersAsync(string path = "")
+        {
+            var result = new List<string>();
+
+            await foreach (var blobItem in _containerClient.GetBlobsByHierarchyAsync(prefix: path, delimiter: "/"))
+            {
+                if (blobItem.IsPrefix)
+                {
+                    result.Add(blobItem.Prefix);
+                }
+            }
+
+            return result;
+        }
         public async Task DeleteFolderAsync(string folderName)
         {
             await foreach (BlobItem blobItem in _containerClient.GetBlobsAsync(prefix: $"{folderName}/"))

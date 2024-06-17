@@ -3,7 +3,9 @@
     public interface IFileStorageProvider
     {
         Task CreateFolderAsync(string folderName);
-        Task<IEnumerable<string>> ListFoldersAsync();
+
+        Task<IEnumerable<string>> ListFoldersAsync(string path = "");
+        //Task<IEnumerable<string>> ListFoldersAsync();
         Task DeleteFolderAsync(string folderName);
 
         Task UploadFileAsync(string folderName, string fileName, Stream fileStream);

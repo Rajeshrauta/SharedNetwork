@@ -33,9 +33,15 @@ namespace SharedFolderAPI.Services
             await Task.CompletedTask;
         }
 
-        public async Task<IEnumerable<string>> ListFoldersAsync()
+        //public async Task<IEnumerable<string>> ListFoldersAsync()
+        //{
+        //    var root = GetSmbFile(string.Empty);
+        //    return root.ListFiles().Where(f => f.IsDirectory()).Select(f => f.GetName()).ToList();
+        //}
+
+        public async Task<IEnumerable<string>> ListFoldersAsync(string path = "")
         {
-            var root = GetSmbFile(string.Empty);
+            var root = GetSmbFile(path);
             return root.ListFiles().Where(f => f.IsDirectory()).Select(f => f.GetName()).ToList();
         }
 
@@ -79,13 +85,31 @@ namespace SharedFolderAPI.Services
 
         public async Task<string> GetFileUrlAsync(string folderName, string fileName)
         {
-            var file = GetSmbFile(Path.Combine(folderName, fileName));
-            return file.GetPath();
+            SmbFile file;
+            if (folderName == null || folderName == "")
+            {
+                file = GetSmbFile(Path.Combine(fileName));
+                return file.GetPath();
+            }
+            else
+            {
+                file = GetSmbFile(Path.Combine(folderName, fileName));
+                return file.GetPath();
+            }
         }
 
         public async Task DeleteFileAsync(string folderName, string fileName)
         {
-            var file = GetSmbFile(Path.Combine(folderName, fileName));
+            SmbFile file;
+            if (folderName==null || folderName=="")
+            {
+                file = GetSmbFile(Path.Combine(fileName));
+            }
+            else
+            {
+                file = GetSmbFile(Path.Combine(folderName, fileName));
+            }
+
             if (file.Exists())
             {
                 file.Delete();

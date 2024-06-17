@@ -23,11 +23,19 @@ namespace SharedFolderAPI.Controllers
             return Ok();
         }
 
+        //[HttpGet("ListFolders/{providerType}/folders")]
+        //public async Task<IActionResult> ListFolders(string providerType)
+        //{
+        //    var provider = _storageProviderFactory.CreateProvider(providerType);
+        //    var folders = await provider.ListFoldersAsync();
+        //    return Ok(folders);
+        //}
+
         [HttpGet("ListFolders/{providerType}/folders")]
-        public async Task<IActionResult> ListFolders(string providerType)
+        public async Task<IActionResult> ListFolders(string providerType, [FromQuery] string? path = "")
         {
             var provider = _storageProviderFactory.CreateProvider(providerType);
-            var folders = await provider.ListFoldersAsync();
+            var folders = await provider.ListFoldersAsync(path);
             return Ok(folders);
         }
 
@@ -69,7 +77,7 @@ namespace SharedFolderAPI.Controllers
         }
 
         [HttpGet("GetFileUrl/{providerType}/files/{fileName}/url")]
-        public async Task<IActionResult> GetFileUrl(string providerType, string folderName, string fileName)
+        public async Task<IActionResult> GetFileUrl(string providerType, string fileName,string folderName=null )
         {
             var provider = _storageProviderFactory.CreateProvider(providerType);
             var fileUrl = await provider.GetFileUrlAsync(folderName, fileName);
