@@ -1,0 +1,6 @@
+@SharedFolderAPI_HostAddress = http://localhost:5129
+
+GET {{SharedFolderAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
