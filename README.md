@@ -13,4 +13,4 @@ POST /api/files/SMB/folders?folderName=folderName
 2. Azure Blob Storage
 Provider Type: Azure
 Example: Example: Create a folder in Azure
-POST /api/files/Azure/files?folderName=myFolder
+POST /api/files/Azure/folders?folderName=folderName
